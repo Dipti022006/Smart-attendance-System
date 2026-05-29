@@ -1,0 +1,277 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Session Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<!-- HEADER -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h2 class="fw-bold">
+            Live Attendance Dashboard
+        </h2>
+
+        <p class="text-secondary">
+            Subject:
+            <b>{{session_obj.subject}}</b>
+
+            |
+
+            Class:
+            <b>
+                {{session_obj.year}}
+                {{session_obj.branch}}
+                {{session_obj.division}}
+            </b>
+        </p>
+    </div>
+
+    <a href="{{url_for('route.teacher_dashboard')}}"
+       class="btn btn-dark">
+        Back
+    </a>
+
+</div>
+
+<!-- LIVE STATS -->
+<div class="row mt-4">
+
+    <div class="col-md-3 mb-3">
+        <div class="card shadow text-center p-3 border-primary">
+
+            <h5>Total Students</h5>
+
+            <h2 class="text-primary">
+                {{total_students}}
+            </h2>
+
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card shadow text-center p-3 bg-success text-white">
+
+            <h5>Present</h5>
+
+            <h2>
+                {{present_count}}
+            </h2>
+
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card shadow text-center p-3 bg-danger text-white">
+
+            <h5>Absent</h5>
+
+            <h2>
+                {{absent_count}}
+            </h2>
+
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card shadow text-center p-3 bg-warning">
+
+            <h5>Suspicious</h5>
+
+            <h2>
+                {{suspicious_count}}
+            </h2>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- ATTENDANCE TABLE -->
+<div class="card shadow mt-4">
+
+    <div class="card-body">
+
+        <h4 class="mb-3">
+            Attendance Records
+        </h4>
+
+        {% if attendance %}
+
+        <table class="table table-bordered table-hover">
+
+            <thead class="table-dark">
+
+                <tr>
+
+                    <th>Student</th>
+
+                    <th>Roll No</th>
+
+                    <th>Status</th>
+
+                    <th>Photo</th>
+
+                    <th>Teacher Decision</th>
+
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for a in attendance %}
+
+                <tr>
+
+                    <td>
+                        {{a.student.username}}
+                    </td>
+
+                    <td>
+                        {{a.student.roll_no}}
+                    </td>
+
+                    <td>
+
+                        {% if a.status == "present" %}
+
+                            <span class="badge bg-success">
+                                Present
+                            </span>
+
+                        {% elif a.status == "suspicious" %}
+
+                            <span class="badge bg-warning text-dark">
+                                Suspicious
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-danger">
+                                Absent
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        {% if a.image_file %}
+
+                        <img
+                            src="{{url_for('static',
+                            filename='selfies/' + a.image_file)}}"
+
+                            width="100"
+                            class="rounded border"
+                        >
+
+                        {% else %}
+
+                        No Image
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        {% if a.teacher_decision %}
+
+                            <span class="badge bg-info">
+
+                                {{a.teacher_decision}}
+
+                            </span>
+
+                        {% else %}
+
+                            Pending
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        <!-- MARK PRESENT -->
+                        <form
+                            method="POST"
+                            action="{{url_for(
+                            'route.override_attendance',
+                            id=a.id
+                            )}}"
+                        >
+
+                            <input
+                                type="hidden"
+                                name="decision"
+                                value="present"
+                            >
+
+                            <button
+                                class="btn btn-success btn-sm mb-1 w-100"
+                            >
+                                Mark Present
+                            </button>
+
+                        </form>
+
+                        <!-- MARK ABSENT -->
+                        <form
+                            method="POST"
+                            action="{{url_for(
+                            'route.override_attendance',
+                            id=a.id
+                            )}}"
+                        >
+
+                            <input
+                                type="hidden"
+                                name="decision"
+                                value="absent"
+                            >
+
+                            <button
+                                class="btn btn-danger btn-sm w-100"
+                            >
+                                Mark Absent
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        {% else %}
+
+        <div class="alert alert-warning">
+
+            No attendance records yet
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</div>
+
+{% endblock %}

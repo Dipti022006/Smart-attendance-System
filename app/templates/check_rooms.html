@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Room Availability
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="card shadow-lg border-0">
+
+        <div class="card-body">
+
+            <h2 class="text-center fw-bold mb-4">
+
+                Check Empty Rooms
+
+            </h2>
+
+            <form method="POST">
+
+                <div class="row">
+
+                    <div class="col-md-5">
+
+                        <label class="fw-bold">
+
+                            Select Day
+
+                        </label>
+
+                        <select
+                            name="day"
+                            class="form-control"
+                            required
+                        >
+
+                            <option value="">Choose Day</option>
+
+                            <option>Monday</option>
+                            <option>Tuesday</option>
+                            <option>Wednesday</option>
+                            <option>Thursday</option>
+                            <option>Friday</option>
+                            <option>Saturday</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-5">
+
+                        <label class="fw-bold">
+
+                            Select Time Slot
+
+                        </label>
+
+                        <input
+                            type="time"
+                            name="start_time"
+                            class="form-control"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="col-md-2 d-flex align-items-end">
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary w-100"
+                        >
+
+                            Check
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+            {% if available_rooms %}
+
+            <div class="mt-5">
+
+                <h4 class="fw-bold text-success mb-4">
+
+                    Empty Rooms Available
+
+                </h4>
+
+                <div class="row">
+
+                    {% for room in available_rooms %}
+
+                    <div class="col-md-3 mb-3">
+
+                        <div class="card border-success shadow">
+
+                            <div class="card-body text-center">
+
+                                <h5 class="fw-bold text-success">
+
+                                    {{ room }}
+
+                                </h5>
+
+                                <span class="badge bg-success">
+
+                                    EMPTY
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+            {% elif request.method == 'POST' %}
+
+            <div class="alert alert-danger mt-4">
+
+                No Empty Rooms Available
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,346 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Teacher Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<!-- HEADER -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="fw-bold">
+            Welcome Teacher, {{current_user.username}}
+        </h1>
+        <p class="text-secondary">
+            Manage attendance, sessions and analytics
+        </p>
+    </div>
+
+    <a href="/logout" class="btn btn-danger">
+        <i class="bi bi-box-arrow-right"></i> Logout
+    </a>
+</div>
+
+<!-- NOTIFICATIONS -->
+{% for note in notifications %}
+<div class="alert {% if note.is_seen %}alert-secondary{% else %}alert-warning{% endif %}">
+    {{note.message}} <br>
+    <small>{{note.created_at}}</small>
+    <br><br>
+
+    <a href="{{url_for('route.mark_seen', id=note.id)}}" class="btn btn-success btn-sm">Seen</a>
+    <a href="{{url_for('route.delete_notification', id=note.id)}}" class="btn btn-danger btn-sm">Delete</a>
+</div>
+{% endfor %}
+
+<!-- DOUBTS -->
+<button class="btn btn-danger mb-3" data-bs-toggle="collapse" data-bs-target="#teacherDoubtBox">
+    🔴 Student Doubts
+    {% if new_doubt_count>0 %}
+    <span class="badge bg-light text-danger">{{new_doubt_count}}</span>
+    {% endif %}
+</button>
+
+<div class="collapse" id="teacherDoubtBox">
+    <div class="card shadow border-danger">
+        <div class="card-body">
+
+            <h4>Student Doubts</h4>
+
+            {% if teacher_doubts %}
+            {% for d in teacher_doubts %}
+
+            <div class="alert {% if d.is_seen==False %}alert-danger{% else %}alert-light{% endif %}">
+                <b>Subject:</b> {{d.subject}} <br>
+                <b>Class:</b> {{d.year}} {{d.branch}} {{d.division}} <br>
+                <b>Doubt:</b> {{d.message}} <br>
+                <small>{{d.created_at.strftime('%d-%m-%Y %H:%M')}}</small>
+                <br><br>
+
+                {% if d.answer %}
+                <div class="alert alert-success">
+                    <b>Reply:</b> {{d.answer}}
+                </div>
+                {% else %}
+                <form method="POST" action="{{url_for('route.answer_doubt', id=d.id)}}">
+                    <textarea name="answer" class="form-control" placeholder="Write answer" required></textarea>
+                    <br>
+                    <button class="btn btn-success">Reply</button>
+                </form>
+                {% endif %}
+            </div>
+
+            {% endfor %}
+            {% else %}
+            <div class="alert alert-secondary">No doubts received</div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+<!-- DASHBOARD CARDS -->
+<div class="row mt-4">
+
+    <!-- CREATE SESSION -->
+    <div class="col-lg-4 col-md-6 mb-3">
+        <div class="card p-3 text-center shadow h-100">
+            <i class="bi bi-calendar-check display-4 text-primary"></i>
+            <h4>Create Attendance Session</h4>
+
+            <form method="POST" action="{{url_for('route.create_session')}}">
+                <input class="form-control mt-2" name="subject" placeholder="Subject" required>
+                <input class="form-control mt-2" name="year" placeholder="Year" required>
+                <input class="form-control mt-2" name="branch" placeholder="Branch" required>
+                <input class="form-control mt-2" name="division" placeholder="Division" required>
+                <input type="number" class="form-control mt-2" name="duration" placeholder="Duration (min)" required>
+
+                <button class="btn btn-primary mt-3 w-100">Create Session</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- VIEW STUDENTS -->
+    <div class="col-lg-4 col-md-6 mb-3">
+        <div class="card p-3 text-center shadow h-100">
+            <i class="bi bi-people-fill display-4 text-success"></i>
+            <h4>View Students</h4>
+
+            <form method="GET" action="{{url_for('route.view_students')}}">
+                <input class="form-control mt-2" name="year" placeholder="Year" required>
+                <input class="form-control mt-2" name="branch" placeholder="Branch" required>
+                <input class="form-control mt-2" name="division" placeholder="Division" required>
+
+                <button class="btn btn-success mt-3 w-100">View</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SCHEDULE -->
+    <div class="col-lg-4 col-md-6 mb-3">
+        <div class="card p-3 text-center shadow h-100">
+            <i class="bi bi-calendar-week display-4 text-warning"></i>
+            <h4>Schedule</h4>
+
+            <a href="{{url_for('route.teacher_schedule')}}"
+               class="btn btn-warning mt-3 w-100">
+                View Schedule
+            </a>
+        </div>
+    </div>
+
+    <!-- ANALYTICS -->
+    <div class="col-lg-4 col-md-6 mb-3">
+        <div class="card p-3 text-center shadow h-100">
+            <i class="bi bi-bar-chart-fill display-4 text-success"></i>
+            <h4>Attendance Analytics</h4>
+
+            <a href="{{url_for('route.teacher_analytics')}}"
+               target="_blank"
+               class="btn btn-success mt-3 w-100">
+                Open Dashboard
+            </a>
+        </div>
+    </div>
+
+</div>
+```html
+<!-- EXPORT ATTENDANCE -->
+<div class="col-lg-4 col-md-6 mb-3">
+    <div class="card p-3 text-center shadow h-100">
+
+        <i class="bi bi-download display-4 text-danger"></i>
+
+        <h4>Export Attendance</h4>
+
+        <form method="GET"
+              action="{{url_for('route.export_attendance')}}">
+
+            <input class="form-control mt-2"
+                   name="year"
+                   placeholder="Year"
+                   required>
+
+            <input class="form-control mt-2"
+                   name="branch"
+                   placeholder="Branch"
+                   required>
+
+            <input class="form-control mt-2"
+                   name="division"
+                   placeholder="Division"
+                   required>
+
+            <input class="form-control mt-2"
+                   name="subject"
+                   placeholder="Subject"
+                   required>
+
+            <button class="btn btn-danger mt-3 w-100">
+                Export CSV
+            </button>
+
+        </form>
+
+    </div>
+</div>
+```
+
+
+<!-- LIVE SESSIONS -->
+{% if sessions %}
+<div class="card shadow mt-4">
+    <div class="card-body">
+
+        <h4><i class="bi bi-broadcast"></i> Active Live Sessions</h4>
+
+        <div class="table-responsive">
+        <table class="table table-bordered mt-3">
+            <thead class="table-dark">
+                <tr>
+                    <th>Subject</th>
+                    <th>Class</th>
+                    <th>Time</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for s in sessions %}
+            <tr>
+                <td>{{s.subject}}</td>
+                <td>{{s.year}} {{s.branch}} {{s.division}}</td>
+                <td>{{s.start_time.strftime('%H:%M')}} - {{s.end_time.strftime('%H:%M')}}</td>
+                <td>
+                    <form method="POST"
+                          action="{{url_for('route.upload_class_photo', code=s.session_code)}}"
+                          enctype="multipart/form-data">
+
+                        <input type="file" name="class_image" class="form-control mb-2" required>
+
+                        <button class="btn btn-success btn-sm w-100">Upload Class Photo</button>
+                    </form>
+
+                    <a href="{{url_for('route.session_dashboard', code=s.session_code)}}"
+                       class="btn btn-primary btn-sm w-100 mt-2">
+                        View Attendance
+                    </a>
+
+                    <a href="{{url_for('route.delete_session', id=s.id)}}"
+                       class="btn btn-danger btn-sm w-100 mt-2"
+                       onclick="return confirm('Delete this session?')">
+                        Delete Session
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+        </div>
+
+    </div>
+</div>
+{% endif %}
+
+<!-- OLD SESSIONS -->
+<div class="card shadow mt-4">
+<div class="card-body">
+
+<h4>Previous Session History</h4>
+
+{% if old_sessions %}
+<div class="table-responsive">
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Subject</th>
+            <th>Class</th>
+            <th>Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    {% for s in old_sessions %}
+    <tr>
+        <td>{{s.subject}}</td>
+        <td>{{s.year}} {{s.branch}} {{s.division}}</td>
+        <td>{{s.start_time.strftime('%d-%m-%Y %H:%M')}}</td>
+        <td>
+            <a href="{{url_for('route.delete_session', id=s.id)}}"
+               class="btn btn-danger btn-sm"
+               onclick="return confirm('Delete session history?')">
+                Delete History
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+{% else %}
+<div class="alert alert-warning">No previous sessions</div>
+{% endif %}
+
+</div>
+</div>
+
+<!-- NOTICE -->
+<div class="card shadow mt-4">
+<div class="card-body">
+
+<h4>Send Notice</h4>
+
+<form method="POST" action="{{url_for('route.send_notice')}}">
+
+<div class="row">
+
+<div class="col-md-4">
+<select name="year" multiple class="form-control" required>
+<option>First Year</option>
+<option>Second Year</option>
+<option>Third Year</option>
+<option>Final Year</option>
+</select>
+</div>
+
+<div class="col-md-4">
+<select name="branch" multiple class="form-control" required>
+<option>Computer Science</option>
+<option>IT</option>
+<option>ENTC</option>
+<option>CIVIL</option>
+<option>Mechanical</option>
+</select>
+</div>
+
+<div class="col-md-4">
+<select name="division" multiple class="form-control" required>
+<option>A</option>
+<option>B</option>
+<option>C</option>
+</select>
+</div>
+
+</div>
+
+<br>
+
+<textarea name="message" class="form-control" placeholder="Write notice" required></textarea>
+
+<br>
+
+<button class="btn btn-primary w-100">Send Notice</button>
+
+</form>
+
+</div>
+</div>
+
+</div>
+
+{% endblock %}

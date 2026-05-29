@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h3>Students List</h3>
+
+    {% if students %}
+
+    <form method="POST" action="/mark_manual_attendance">
+
+        <table class="table table-bordered">
+
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Roll No</th>
+                    <th>Present</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            {% for s in students %}
+                <tr>
+                    <td>{{ s.username }}</td>
+                    <td>{{ s.roll_no }}</td>
+                    <td>
+                        <input type="checkbox" name="present_students" value="{{ s.id }}">
+                    </td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        <button class="btn btn-success">
+            Submit Attendance
+        </button>
+
+    </form>
+
+    {% else %}
+
+        <p>No students found</p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,331 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Add Schedule
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow-lg border-0 rounded-4">
+
+                <div class="card-body p-5">
+
+                    <h2 class="text-center fw-bold mb-5">
+
+                        Create New Schedule
+
+                    </h2>
+
+                    <form method="POST">
+
+                        <div class="row">
+
+                            <!-- DAY -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+
+                                    Day
+
+                                </label>
+
+                                <select name="day"
+                                        class="form-select"
+                                        required>
+
+                                    <option value="">
+                                        Select Day
+                                    </option>
+
+                                    <option value="Monday">
+                                        Monday
+                                    </option>
+
+                                    <option value="Tuesday">
+                                        Tuesday
+                                    </option>
+
+                                    <option value="Wednesday">
+                                        Wednesday
+                                    </option>
+
+                                    <option value="Thursday">
+                                        Thursday
+                                    </option>
+
+                                    <option value="Friday">
+                                        Friday
+                                    </option>
+
+                                    <option value="Saturday">
+                                        Saturday
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <!-- SUBJECT -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+
+                                    Subject
+
+                                </label>
+
+                                <input type="text"
+                                       name="subject"
+                                       class="form-control"
+                                       placeholder="Enter Subject"
+                                       required>
+
+                            </div>
+
+                            <!-- ROOM -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+
+                                    Room Number
+
+                                </label>
+
+                                <input type="text"
+                                       name="room"
+                                       class="form-control"
+                                       placeholder="E101"
+                                       required>
+
+                            </div>
+
+                            <!-- TEACHER -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+
+                                    Select Teacher
+
+                                </label>
+
+                                <select name="teacher_id"
+                                        class="form-select"
+                                        required>
+
+                                    <option value="">
+                                        Select Teacher
+                                    </option>
+
+                                    {% for teacher in teachers %}
+
+                                    <option value="{{ teacher.id }}">
+
+                                        {{ teacher.id }} -
+                                        {{ teacher.username }}
+
+                                    </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+                            </div>
+
+                            <!-- START TIME -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+
+                                    Start Time
+
+                                </label>
+
+                                <input type="time"
+                                       name="start_time"
+                                       class="form-control"
+                                       required>
+
+                            </div>
+
+                            <!-- END TIME -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+
+                                    End Time
+
+                                </label>
+
+                                <input type="time"
+                                       name="end_time"
+                                       class="form-control"
+                                       required>
+
+                            </div>
+
+                            <!-- YEAR -->
+
+                            <div class="col-md-4 mb-3">
+
+                                <label class="form-label">
+
+                                    Year
+
+                                </label>
+
+                                <select name="year"
+                                        class="form-select"
+                                        required>
+
+                                    <option value="">
+                                        Select Year
+                                    </option>
+
+                                    <option value="First Year">
+                                        First Year
+                                    </option>
+
+                                    <option value="Second Year">
+                                        Second Year
+                                    </option>
+
+                                    <option value="Third Year">
+                                        Third Year
+                                    </option>
+
+                                    <option value="Final Year">
+                                        Final Year
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <!-- BRANCH -->
+
+                            <div class="col-md-4 mb-3">
+
+                                <label class="form-label">
+
+                                    Branch
+
+                                </label>
+
+                                <select name="branch"
+                                        class="form-select"
+                                        required>
+
+                                    <option value="">
+                                        Select Branch
+                                    </option>
+
+                                    <option value="Computer Science">
+                                        Computer Science
+                                    </option>
+
+                                    <option value="IT">
+                                        IT
+                                    </option>
+
+                                    <option value="Mechanical">
+                                        Mechanical
+                                    </option>
+
+                                    <option value="Civil">
+                                        Civil
+                                    </option>
+
+                                    <option value="Electrical">
+                                        Electrical
+                                    </option>
+
+                                    <option value="ENTC">
+                                        ENTC
+                                    </option>
+
+                                    <option value="IOT">
+                                        IOT
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <!-- DIVISION -->
+
+                            <div class="col-md-4 mb-3">
+
+                                <label class="form-label">
+
+                                    Division
+
+                                </label>
+
+                                <select name="division"
+                                        class="form-select"
+                                        required>
+
+                                    <option value="">
+                                        Select Division
+                                    </option>
+
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                    <option value="D">D</option>
+                                    <option value="E">E</option>
+                                    <option value="F">F</option>
+                                    <option value="G">G</option>
+                                    <option value="H">H</option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                        <!-- BUTTONS -->
+
+                        <div class="d-flex justify-content-center gap-3 mt-4">
+
+                            <button type="submit"
+                                    class="btn btn-primary px-5">
+
+                                Add Schedule
+
+                            </button>
+
+                            <a href="{{ url_for('route.admin_dashboard') }}"
+                               class="btn btn-secondary px-5">
+
+                                Back
+
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

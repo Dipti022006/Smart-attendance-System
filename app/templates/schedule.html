@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2>Schedule</h2>
+
+    {% if schedules and schedules|length > 0 %}
+
+    <table class="table table-bordered">
+
+        <thead>
+        <tr>
+            <th>Day</th>
+            <th>Subject</th>
+            <th>Time</th>
+            <th>Room</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for s in schedules %}
+        <tr>
+            <td>{{ s.day or 'N/A' }}</td>
+            <td>{{ s.subject or 'N/A' }}</td>
+
+            <td>
+                {% if s.start_time and s.end_time %}
+                    {{ s.start_time.strftime('%H:%M') }} - {{ s.end_time.strftime('%H:%M') }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </td>
+
+            <td>{{ s.room or 'N/A' }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+
+    {% else %}
+
+        <div class="alert alert-danger">
+            No schedule found in database
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

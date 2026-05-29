@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2 class="text-center fw-bold mb-4">
+
+Admin Schedule Verification
+
+</h2>
+
+<!-- FILTER -->
+
+<div class="card shadow p-4 mb-4">
+
+<form method="GET">
+
+<div class="row">
+
+<div class="col-md-3">
+
+<input
+name="year"
+placeholder="Year"
+class="form-control"
+required>
+
+</div>
+
+<div class="col-md-3">
+
+<input
+name="branch"
+placeholder="Branch"
+class="form-control"
+required>
+
+</div>
+
+<div class="col-md-3">
+
+<input
+name="division"
+placeholder="Division"
+class="form-control"
+required>
+
+</div>
+
+<div class="col-md-3">
+
+<button
+class="btn btn-primary w-100">
+
+View Schedule
+
+</button>
+
+</div>
+
+</div>
+
+</form>
+
+</div>
+
+<!-- TIMETABLE -->
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<table class="table table-bordered text-center align-middle">
+
+<thead class="table-dark">
+
+<tr>
+
+<th>Time</th>
+
+{% for day in days %}
+<th>{{day}}</th>
+{% endfor %}
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for slot in time_slots %}
+
+<tr>
+
+<td class="fw-bold">
+{{slot}}
+</td>
+
+{% for day in days %}
+
+<td>
+
+{% set s = timetable[slot][day] %}
+
+{% if s %}
+
+<div class="card border-0 shadow-sm p-2">
+
+<span class="badge bg-success">
+
+{{s.subject}}
+
+</span>
+
+<div class="mt-2">
+
+<b>
+{{s.teacher.username}}
+</b>
+
+</div>
+
+<div>
+
+{{s.room}}
+
+</div>
+
+<small>
+
+{{s.year}}
+{{s.branch}}
+{{s.division}}
+
+</small>
+
+<div class="mt-2">
+
+<a href="{{url_for('route.delete_schedule', id=s.id)}}"
+class="btn btn-danger btn-sm">
+
+Delete
+
+</a>
+
+</div>
+
+</div>
+
+{% else %}
+
+-
+
+{% endif %}
+
+</td>
+
+{% endfor %}
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

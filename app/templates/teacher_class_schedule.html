@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h3>Class Schedule</h3>
+
+    {% if schedules %}
+
+        <table class="table table-bordered mt-3">
+
+            <thead class="table-dark">
+                <tr>
+                    <th>Day</th>
+                    <th>Subject</th>
+                    <th>Time</th>
+                    <th>Room</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for s in schedules %}
+                <tr>
+                    <td>{{ s.day }}</td>
+                    <td>{{ s.subject }}</td>
+                    <td>
+                        {{ s.start_time.strftime('%H:%M') if s.start_time else '' }}
+                        -
+                        {{ s.end_time.strftime('%H:%M') if s.end_time else '' }}
+                    </td>
+                    <td>{{ s.room }}</td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    {% else %}
+
+        <div class="alert alert-warning">
+            No schedule found for this class.
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

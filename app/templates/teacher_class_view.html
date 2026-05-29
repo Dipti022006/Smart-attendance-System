@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Class {{ year }}, {{ branch }}, {{ division }}
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <!-- CLASS HEADER CARD -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h3 class="mb-2">
+                Class: {{ year }} - {{ branch }} - Division {{ division }}
+            </h3>
+            <h5 class="text-primary">
+                Total Students: {{ strength }}
+            </h5>
+        </div>
+    </div>
+
+    <!-- TABLE CARD -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Photo</th>
+                            <th>Name</th>
+                            <th>Roll No</th>
+                            <th>Email</th>
+                            <th>Year</th>
+                            <th>Branch</th>
+                            <th>Division</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for s in students %}
+                        <tr>
+                            <td>
+                                <img src="{{ url_for('static', filename='uploads/' + s.image_file) }}"
+                                     width="60"
+                                     height="60"
+                                     style="object-fit: cover; border-radius: 50%;">
+                            </td>
+
+                            <td><strong>{{ s.username }}</strong></td>
+                            <td>{{ s.roll_no }}</td>
+                            <td>{{ s.email }}</td>
+                            <td>{{ s.year }}</td>
+                            <td>{{ s.branch }}</td>
+                            <td>{{ s.division }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

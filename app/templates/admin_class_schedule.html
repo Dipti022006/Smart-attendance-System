@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Class Schedule View
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="fw-bold mb-4">
+        Class Weekly Timetable
+    </h2>
+
+    <!-- FILTER FORM -->
+    <form method="GET" class="row mb-4">
+
+        <div class="col-md-3">
+            <select name="year" class="form-control" required>
+                <option value="">Year</option>
+                <option value="First Year">First Year</option>
+                <option value="Second Year">Second Year</option>
+                <option value="Third Year">Third Year</option>
+                <option value="Final Year">Final Year</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <select name="branch" class="form-control" required>
+                <option value="">Branch</option>
+                <option value="CS">Computer Science</option>
+                <option value="IT">IT</option>
+                <option value="Mechanical">Mechanical</option>
+                <option value="Civil">Civil</option>
+                <option value="ENTC">ENTC</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <select name="division" class="form-control" required>
+                <option value="">Division</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">C</option>
+                <option value="E">C</option>
+                <option value="F">C</option>
+
+
+
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <button class="btn btn-primary w-100">
+                View Schedule
+            </button>
+        </div>
+
+    </form>
+
+    <!-- TIMETABLE -->
+    {% if schedules %}
+
+    <table class="table table-bordered text-center">
+
+        <thead class="table-dark">
+
+            <tr>
+                <th>Day</th>
+                <th>Time</th>
+                <th>Subject</th>
+                <th>Room</th>
+                <th>Teacher ID</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for s in schedules %}
+
+            <tr>
+                <td>{{ s.day }}</td>
+                <td>{{ s.start_time }} - {{ s.end_time }}</td>
+                <td>{{ s.subject }}</td>
+                <td>{{ s.room }}</td>
+                <td>{{ s.teacher_id }}</td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    {% else %}
+
+    <div class="alert alert-info">
+        Select filters to view schedule
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

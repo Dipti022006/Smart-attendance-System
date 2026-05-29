@@ -1,0 +1,418 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2 class="text-center mb-4">
+Teacher Schedule Management
+</h2>
+<!-- ================= ADD / EDIT LECTURE ================= -->
+
+<div class="card p-4 mb-4">
+
+<h4>Add / Edit Lecture</h4>
+
+<form method="POST"
+action="{{url_for('route.teacher_schedule')}}">
+
+<div class="row">
+
+<!-- Subject -->
+<div class="col-md-4 mb-3">
+<label>Subject</label>
+<input
+name="subject"
+class="form-control"
+placeholder="Subject"
+required>
+</div>
+
+<!-- Day -->
+<div class="col-md-4 mb-3">
+<label>Day</label>
+
+<select
+name="day"
+class="form-control"
+required>
+
+<option value="">Select Day</option>
+
+<option>Monday</option>
+<option>Tuesday</option>
+<option>Wednesday</option>
+<option>Thursday</option>
+<option>Friday</option>
+<option>Saturday</option>
+
+</select>
+</div>
+
+<!-- Start Time -->
+<div class="col-md-4 mb-3">
+<label>Start Time</label>
+
+<input
+type="time"
+name="start_time"
+class="form-control"
+required>
+
+</div>
+
+<!-- End Time -->
+<div class="col-md-4 mb-3">
+
+<label>End Time</label>
+
+<input
+type="time"
+name="end_time"
+class="form-control"
+required>
+
+</div>
+
+<!-- Check Rooms Button -->
+<div class="col-md-4 mb-3">
+
+<label>&nbsp;</label>
+
+<button
+type="button"
+class="btn btn-info w-100"
+onclick="checkRooms()">
+
+Check Empty Rooms
+
+</button>
+
+</div>
+
+<!-- Empty Rooms -->
+<div class="col-md-4 mb-3">
+
+<label>Empty Rooms</label>
+
+<select
+name="room"
+class="form-control"
+required>
+
+<option value="">
+Select Empty Room
+</option>
+
+{% for room in free_rooms %}
+<option value="{{room}}">
+{{room}}
+</option>
+{% endfor %}
+
+</select>
+
+</div>
+
+<!-- Year -->
+<div class="col-md-4 mb-3">
+
+<label>Year</label>
+
+<input
+name="year"
+class="form-control"
+placeholder="Year"
+required>
+
+</div>
+
+<!-- Branch -->
+<div class="col-md-4 mb-3">
+
+<label>Branch</label>
+
+<input
+name="branch"
+class="form-control"
+placeholder="Branch"
+required>
+
+</div>
+
+<!-- Division -->
+<div class="col-md-4 mb-3">
+
+<label>Division</label>
+
+<input
+name="division"
+class="form-control"
+placeholder="Division"
+required>
+
+</div>
+
+<!-- Valid From -->
+<div class="col-md-6 mb-3">
+
+<label>Valid From</label>
+
+<input
+type="date"
+name="valid_from"
+class="form-control">
+
+</div>
+
+<!-- Valid Until -->
+<div class="col-md-6 mb-3">
+
+<label>Valid Until</label>
+
+<input
+type="date"
+name="valid_until"
+class="form-control">
+
+</div>
+
+</div>
+
+<button
+class="btn btn-success w-100 mt-3">
+
+Save Lecture
+
+</button>
+
+</form>
+
+</div>
+
+<script>
+
+function checkRooms(){
+
+    let day=document.querySelector(
+        '[name="day"]'
+    ).value;
+
+    let start_time=document.querySelector(
+        '[name="start_time"]'
+    ).value;
+
+    if(day=="" || start_time==""){
+
+        alert(
+        "Please select day and start time first"
+        );
+
+        return;
+    }
+
+    window.location.href=
+    "/teacher_schedule?day="
+    +day+
+    "&start_time="
+    +start_time;
+}
+
+</script>
+
+
+<!-- ================= CLASS SEARCH ================= -->
+
+<div class="card p-4 mb-4">
+
+<h4>Search Class Timetable</h4>
+
+<form method="GET"
+action="{{url_for('route.view_schedule')}}">
+
+<div class="row">
+
+<div class="col">
+
+<input
+name="year"
+placeholder="Year"
+class="form-control">
+
+</div>
+
+
+<div class="col">
+
+<input
+name="branch"
+placeholder="Branch"
+class="form-control">
+
+</div>
+
+
+<div class="col">
+
+<input
+name="division"
+placeholder="Division"
+class="form-control">
+
+</div>
+
+
+<div class="col">
+
+<button
+class="btn btn-primary w-100">
+
+Search
+
+</button>
+
+</div>
+
+</div>
+
+</form>
+
+</div>
+
+
+
+<!-- ================= MY TIMETABLE ================= -->
+
+<div class="card shadow mt-4">
+
+<div class="card-body">
+
+<h4 class="fw-bold">
+
+<i class="bi bi-calendar-week"></i>
+
+My Schedule
+
+</h4>
+
+<table class="table table-bordered text-center align-middle">
+
+<thead class="table-dark">
+
+<tr>
+
+<th>Time</th>
+
+{% for day in days %}
+<th>{{day}}</th>
+{% endfor %}
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+{% for slot in time_slots %}
+
+<tr>
+
+<td class="fw-bold">
+
+{{slot}}
+
+</td>
+
+{% for day in days %}
+
+<td>
+
+{% set s=timetable[slot][day] %}
+
+{% if s %}
+
+<div class="card p-2 shadow-sm border-0">
+
+<span class="badge bg-primary">
+
+{{s.subject}}
+
+</span>
+
+<div class="mt-2">
+
+<b>
+
+{{s.year}}
+{{s.branch}}
+{{s.division}}
+
+</b>
+
+</div>
+
+<small>
+
+Room : {{s.room}}
+
+</small>
+
+</div>
+
+{% else %}
+
+-
+
+{% endif %}
+
+</td>
+
+{% endfor %}
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+<script>
+
+function checkRooms(){
+
+    let day =
+    document.querySelector(
+    '[name="day"]'
+    ).value;
+
+    let start_time =
+    document.querySelector(
+    '[name="start_time"]'
+    ).value;
+
+    if(day=="" || start_time==""){
+
+        alert(
+        "Please select day and time first"
+        );
+
+        return;
+    }
+
+    window.location.href=
+    "/teacher_schedule?day="
+    +day+
+    "&start_time="
+    +start_time;
+}
+
+</script>
+
+{% endblock %}

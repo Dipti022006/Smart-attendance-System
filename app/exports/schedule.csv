@@ -1,0 +1,14 @@
+subject,teacher,day,start_time,end_time,room,year,branch,division
+SRM,Charulata,Monday,09:00,10:00,C101,Second Year,Computer Science,A
+RAD,Priti,Monday,10:00,11:00,C102,Second Year,Computer Science,A
+Python,Mazam,Monday,11:15,12:15,C103,Second Year,Computer Science,A
+Python Lab,Dr. Anjali Mehta,Monday,01:00,03:00,Lab-1,Second Year,Computer Science,A
+AEM,Prof. Rahul Sharma,Tuesday,09:00,10:00,C104,Second Year,Computer Science,A
+AEM Lab,Dr. Neha Joshi,Tuesday,10:00,12:00,Lab-2,Second Year,Computer Science,A
+DA,Dr. Priya Kulkarni,Wednesday,09:00,10:00,C105,Second Year,Computer Science,A
+DA Lab,Prof. Amit Verma,Wednesday,10:00,12:00,Lab-3,Second Year,Computer Science,A
+SRM,Charulata,Thursday,09:00,10:00,C101,Second Year,Computer Science,A
+RAD,Priti,Thursday,10:00,11:00,C102,Second Year,Computer Science,A
+Python,Mazam,Thursday,11:15,12:15,C103,Second Year,Computer Science,A
+AEM,Prof. Rahul Sharma,Friday,09:00,10:00,C104,Second Year,Computer Science,A
+DA,Dr. Priya Kulkarni,Friday,10:00,11:00,C105,Second Year,Computer Science,A

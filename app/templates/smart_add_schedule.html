@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h3>Smart Add Schedule</h3>
+
+<form method="POST">
+
+<div class="row">
+
+<!-- CLASS INFO -->
+<div class="col-md-4">
+<input name="year" class="form-control" placeholder="Year">
+</div>
+
+<div class="col-md-4">
+<input name="branch" class="form-control" placeholder="Branch">
+</div>
+
+<div class="col-md-4">
+<input name="division" class="form-control" placeholder="Division">
+</div>
+
+<!-- TEACHER + SUBJECT -->
+<div class="col-md-6 mt-2">
+<select name="teacher_id" class="form-control">
+    {% for t in teachers %}
+        <option value="{{ t.id }}">{{ t.username }}</option>
+    {% endfor %}
+</select>
+</div>
+
+<div class="col-md-6 mt-2">
+<input name="subject" class="form-control" placeholder="Subject">
+</div>
+
+<!-- TIME -->
+<div class="col-md-4 mt-2">
+<input name="day" class="form-control" placeholder="Day">
+</div>
+
+<div class="col-md-4 mt-2">
+<input name="start_time" class="form-control" placeholder="Start Time">
+</div>
+
+<div class="col-md-4 mt-2">
+<input name="end_time" class="form-control" placeholder="End Time">
+</div>
+
+<!-- ROOM -->
+<div class="col-md-12 mt-2">
+<input name="room" class="form-control" placeholder="Room">
+</div>
+
+</div>
+
+<button class="btn btn-success mt-3 w-100">
+    Save Schedule
+</button>
+
+</form>
+
+</div>
+
+{% endblock %}

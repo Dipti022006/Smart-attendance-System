@@ -1,0 +1,5 @@
+teacher_id,subject,year,branch,division,day,start_time,end_time,room
+1,Python,FY,Computer Science,A,Monday,08:00,09:00,E101
+1,Python,FY,Computer Science,A,Wednesday,10:00,11:00,E101
+2,Java,SY,Computer Science,B,Tuesday,09:00,10:00,E202
+3,DBMS,TY,IT,A,Friday,11:00,12:00,E303

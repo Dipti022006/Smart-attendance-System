@@ -1,0 +1,98 @@
+<table class="table table-bordered text-center">
+
+<thead class="table-dark">
+
+<tr>
+
+<th>Time</th>
+
+<th>Monday</th>
+<th>Tuesday</th>
+<th>Wednesday</th>
+<th>Thursday</th>
+<th>Friday</th>
+<th>Saturday</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% set times=[
+'08:00',
+'09:00',
+'10:00',
+'11:00',
+'12:00',
+'13:00',
+'14:00',
+'15:00',
+'16:00'
+] %}
+
+{% set days=[
+'Monday',
+'Tuesday',
+'Wednesday',
+'Thursday',
+'Friday',
+'Saturday'
+] %}
+
+
+{% for t in times %}
+
+<tr>
+
+<td>
+
+<b>{{t}}</b>
+
+</td>
+
+{% for d in days %}
+
+<td>
+
+{% for s in schedules %}
+
+{% if s.day==d and s.start_time.strftime("%H:%M")==t %}
+
+<div class="card p-2">
+
+<b>{{s.subject}}</b>
+
+Teacher:
+{{s.teacher.username}}
+
+<br>
+
+Room:
+{{s.room}}
+
+<br>
+
+{{s.year}}
+-
+{{s.branch}}
+-
+{{s.division}}
+
+</div>
+
+{% endif %}
+
+{% endfor %}
+
+</td>
+
+{% endfor %}
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>

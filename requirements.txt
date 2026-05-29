@@ -3,3 +3,4 @@ Flask-SQLAlchemy
 Flask-Login
 Werkzeug
 PyMySQL
+Flask-Migrate==4.0.7
